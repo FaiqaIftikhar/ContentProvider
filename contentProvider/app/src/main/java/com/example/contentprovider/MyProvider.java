@@ -15,6 +15,10 @@ import android.net.Uri;
 import java.util.HashMap;
 
 public class MyProvider extends ContentProvider {
+/////Content Resolver helps in the communication with the contentProvider of another app
+    //every content provider has a unique key called authority
+    //content provider is one of the heart components of android
+    //1)activity 2)services 3)broadcast recievers 4) content providers
 
     static final String PROVIDER_NAME = "com.example.contentprovider.MyProvider";
     static final String URL = "content://" + PROVIDER_NAME + "/cte";
@@ -26,6 +30,13 @@ public class MyProvider extends ContentProvider {
     static final UriMatcher uriMatcher;
     private static HashMap<String, String> values;
 
+    private SQLiteDatabase db;
+    static final String DATABASE_NAME = "mydb";
+    static final String TABLE_NAME = "names";
+    static final int DATABASE_VERSION = 1;
+    static final String CREATE_DB_TABLE = " CREATE TABLE " + TABLE_NAME
+            + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + " name TEXT NOT NULL);";
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -66,7 +77,9 @@ public class MyProvider extends ContentProvider {
         Cursor c = qb.query(db, projection, selection, selectionArgs, null,
                 null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
+
         return c;
+
     }
 
     @Override
@@ -93,7 +106,7 @@ public class MyProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int count = 0;
+        /*int count = 0;
         switch (uriMatcher.match(uri)) {
             case uriCode:
                 count = db.delete(TABLE_NAME, selection, selectionArgs);
@@ -103,12 +116,14 @@ public class MyProvider extends ContentProvider {
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
+        */
+        return 0;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        int count = 0;
+       /* int count = 0;
         switch (uriMatcher.match(uri)) {
             case uriCode:
                 count = db.update(TABLE_NAME, values, selection, selectionArgs);
@@ -118,15 +133,12 @@ public class MyProvider extends ContentProvider {
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
+     */
+       return 0;
     }
 
-    private SQLiteDatabase db;
-    static final String DATABASE_NAME = "mydb";
-    static final String TABLE_NAME = "names";
-    static final int DATABASE_VERSION = 1;
-    static final String CREATE_DB_TABLE = " CREATE TABLE " + TABLE_NAME
-            + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + " name TEXT NOT NULL);";
+
+
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
